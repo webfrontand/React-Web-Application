@@ -1,0 +1,48 @@
+@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
+
+body {
+    background-color: #212121;
+    font-family: 'Hanna', fantasy;
+}
+
+.wall {
+  height: 250px;
+  background-color: #fff;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.text-big {
+  font-size: 2rem;
+}
+
+.textblack {
+  color: rgba(0,0,0,0.87);
+}
+a {
+  color: #fff;
+}
+.quote {
+  border-left: 0.5rem solid #f50057;
+}
+
+.redcolor {
+  color: red;
+}
+
+
+.marginTop {
+  margin-top: 3rem;
+}
+.iconSize {
+  font-size: 10rem;
+}
+
+.caption {
+  font-size: 2rem;
+  color:#ggg;
+}
+
+.captionbody{
+  margin: 2rem;
+}

@@ -1,0 +1,14 @@
+nav ul li:hover {
+   background-color: #424242;
+}
+
+.background {
+  background-color: #212121;
+}
+
+
+@media screen and (min-width: 900px) {
+      .brand-logo {
+        margin-left: 1rem;
+      }
+}
