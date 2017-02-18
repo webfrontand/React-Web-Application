@@ -13,10 +13,10 @@ ERROR CODES:
   0: 타이틀과 리스트 필수 입력
 */
 exports.writer = (req, res) => {
-  const { title, backgroundImage, urltitle, url } = req.body;
+  const { title, article, username } = req.body;
   const { _id } = req.decoded;
-  console.log(req.body);
-  if(!title || !url || !urltitle){
+
+  if(!title || !article || !username){
     return res.status(400).json({
       code: 0
     });
@@ -25,9 +25,8 @@ exports.writer = (req, res) => {
   const post = new Post({
     writer: _id,
     title,
-    backgroundImage,
-    urltitle,
-    url
+    article,
+    username
   });
 
   post.save((err, result) => {
@@ -78,7 +77,7 @@ exports.delete = (req, res) => {
 exports.update = (req,res) => {
   const { _id } = req.decoded;
   const { id } = req.params;
-  const { title, backgroundImage, list } = req.body;
+  const { title, article } = req.body;
 
   if(!mongoose.Types.ObjectId.isValid(id)){
     return res.status(400).json({
@@ -86,7 +85,7 @@ exports.update = (req,res) => {
     });
   }
 
-  if(!title || !list){
+  if(!title || !article){
     return res.status(400).json({
       code: 1
     });
@@ -106,8 +105,7 @@ exports.update = (req,res) => {
     }
 
     post.title = title;
-    post.backgroundImage = backgroundImage ? backgroundImage : 'none';
-    post.list = list;
+    post.article = article;
 
     post.save((err, result) => {
       res.status(200).json({

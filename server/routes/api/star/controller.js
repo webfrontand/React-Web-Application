@@ -4,7 +4,7 @@ import Post from '../../../models/post';
 exports.star = (req, res) => {
   const { id } = req.params;
   const { _id } = req.decoded;
-
+  console.log(_id);
   if(!mongoose.Types.ObjectId.isValid(id)){
     return res.status(400).json({
       code: 0

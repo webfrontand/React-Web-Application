@@ -5,6 +5,9 @@ body {
     font-family: 'Hanna', fantasy;
 }
 
+.listtext {
+  color:#000;
+}
 .wall {
   height: 250px;
   background-color: #fff;
@@ -45,4 +48,18 @@ a {
 
 .captionbody{
   margin: 2rem;
+}
+
+
+.marginRight {
+  margin-right: 1rem;
+}
+
+
+.item {
+  width:  200px;
+  height: 200px;
+  float: left;
+  background: #fff;
+  border: 2px solid #333;
 }

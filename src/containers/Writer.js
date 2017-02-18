@@ -4,60 +4,74 @@ import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
 import { postRequest } from '../actions/post';
 
+
 class Writer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      title:''
+      title:'',
+      article:''
     }
-    this.handleAdd = this.handleAdd.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdd(){
-      var $text = `
-        <li class="collection-item">
-          <div class="row">
-
-            <div class="input-field col s12 m12 l4">
-              <input
-                id="first-name"
-                type="text"
-                class="validate"
-                name="urltitle"
-              />
-              <label htmlFor="first-name">문서명</label>
-            </div>
-
-            <div class="input-field col s12 m12 l8">
-              <input
-                id="first-name"
-                type="text"
-                class="validate"
-                name="url"
-              />
-              <label htmlFor="first-name">URL</label>
-            </div>
-          </div>
-        </li>
-      `;
-
-      $(".collection").append($text);
+  handleChange(e){
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
   }
+  handleSubmit(e){
+    e.preventDefault();
+    let title = this.state.title;
+    let article = this.state.article;
+    let username = this.props.userinfo.username;
 
+    return this.props.postRequest(title, article, username).then(
+      () => {
+        if(this.props.postRequestStatus === "SUCCESS"){
+          let $toastContent = $('<span style="color: #fff">작성 성공!</span>');
+          Materialize.toast($toastContent, 2000);
+          browserHistory.push('/list');
+        } else {
+          let $toastContent = $('<span style="color: #FFB4BA">필수 입력입니다!</span>');
+          Materialize.toast($toastContent, 2000);
+        }
+      }
+    )
+  }
 
   render(){
     return (
-      <form method="post" action="/api/post" >
+      <form onSubmit={this.handleSubmit} >
         <div className="marginTop">
           <ul className="collection">
             <li className="collection-item">
-              <h1>제목</h1>
-              <a
-                className="btn submitBtn waves-effect waves-light pink accent-3"
-                onClick={this.handleAdd}
-              >
-                추가
-              </a>
+              <h1>글쓰기</h1>
+            </li>
+            <li className="collection-item">
+              <div className="input-field col s12">
+                <input
+                  id="first-name"
+                  type="text"
+                  className="validate"
+                  name="title"
+                  onChange={this.handleChange}
+                />
+                <label htmlFor="first-name">제목</label>
+              </div>
+              <div className="input-field col s12">
+                <textarea id="textarea1"
+                  className="materialize-textarea"
+                  name="article"
+                  onChange={this.handleChange}
+                  >
+                </textarea>
+                <label htmlFor="textarea1">본문</label>
+              </div>
+            </li>
+            <li className="collection-item">
+              <h1></h1>
             </li>
           </ul>
           <button
@@ -75,7 +89,9 @@ class Writer extends Component {
 
 function mapStateToProps(state){
   return {
-    postRequestStatus: state.post.postrequest.status
+    userinfo: state.authenticate.check.userinfo,
+    postRequestStatus: state.post.postrequest.status,
+    postRequestError: state.post.postrequest.error
   }
 }
 

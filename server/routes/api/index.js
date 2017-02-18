@@ -5,11 +5,13 @@ import post from './post';
 import star from './star';
 import comment from './comment';
 import share from './share';
+import list from './list';
 import authMiddleware from '../middlewares/auth';
 
 const router = express.Router();
 
 router.use('/auth', auth);
+router.use('/list', list);
 
 router.use('/', authMiddleware);
 router.use('/post', post);

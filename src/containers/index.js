@@ -7,6 +7,8 @@ import Out from './Out';
 import Thumbnail from './Thumbnail';
 import List from './List';
 import Writer from './Writer'
+import ListDetail from './ListDetail';
+
 export {
   App,
   Home,
@@ -16,5 +18,6 @@ export {
   Out,
   Thumbnail,
   List,
-  Writer
+  Writer,
+  ListDetail
 };

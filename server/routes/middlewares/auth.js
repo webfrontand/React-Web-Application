@@ -4,6 +4,7 @@ const authMiddleware = (req, res, next) => {
   const token = req.headers['x-access-token'] || req.query.token;
 
   if(!token){
+    console.log('no token!');
     return res.status(400).json({
       code: 0
     });

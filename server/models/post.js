@@ -4,14 +4,10 @@ const Schema = mongoose.Schema;
 
 const Post = new Schema({
   writer: String,
+  username: String,
   title: String,
-  backgroundImage: {
-    type: String,
-    default: 'none'
-  },
+  article: String,
   starred: [],
-  urltitle: [],
-  url:[],
   share: [],
   date: {
     type: String,

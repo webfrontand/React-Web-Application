@@ -65,3 +65,12 @@
     border-bottom: 1px solid #000;
     box-shadow: 0 1px 0 0 #000;
   }
+
+  .input-field textarea[name=article]:focus + label {
+    color: #000;
+  }
+
+  .input-field textarea[name=article]:focus {
+    border-bottom: 1px solid #000;
+    box-shadow: 0 1px 0 0 #000;
+  }
