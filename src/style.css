@@ -63,3 +63,8 @@ a {
   background: #fff;
   border: 2px solid #333;
 }
+
+.thumbnailsmall {
+  width: 200px;
+  height: 200px;
+}

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { detailRequest, detailupdateRequest, detaildeleteRequest } from '../actions/post';
+import { detailRequest, detailupdateRequest, detaildeleteRequest, commentListRequest } from '../actions/post';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
-import { Recommend } from '../components';
+import { Recommend, Comment } from '../components';
 
 class ListDetail extends Component {
   constructor(props){
@@ -83,6 +83,7 @@ class ListDetail extends Component {
   }
   componentDidMount(){
     this.props.detailRequest(this.props.params._id);
+    this.props.commentListRequest(this.props.params._id);
   }
 
   componentWillReceiveProps(nextProps){
@@ -181,9 +182,21 @@ class ListDetail extends Component {
         </div>
       </form>
     )
+
+    const mapTo = (data) => {
+      return data.map((result, i) => {
+        return (
+          <Comment
+            key={i}
+            comments={result}
+          />
+        )
+      })
+    }
     return (
       <div>
       { this.state.isEdit ? edit : basic }
+      { mapTo(this.props.comments)}
       </div>
     )
   }
@@ -196,14 +209,16 @@ function mapStateToProps(state){
     updateStatus: state.post.update.status,
     updateError: state.post.update.error,
     deleteStatus: state.post.delete.status,
-    deleteError: state.post.delete.error
+    deleteError: state.post.delete.error,
+    comments: state.post.comment.list
   }
 }
 function mapDispatchToProps(dispatch){
   return bindActionCreators({
     detailRequest,
     detailupdateRequest,
-    detaildeleteRequest
+    detaildeleteRequest,
+    commentListRequest
   }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ListDetail);

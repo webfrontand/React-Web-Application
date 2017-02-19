@@ -5,6 +5,9 @@ import {
   LIST,
   LIST_SUCCESS,
   LIST_FAILURE,
+  LIST_ADD,
+  LIST_ADD_SUCCESS,
+  LIST_ADD_FAILURE,
   DETAIL,
   DETAIL_SUCCESS,
   DETAIL_FAILURE,
@@ -16,7 +19,10 @@ import {
   DETAIL_DELETE_FAILURE,
   RECOMMENT,
   RECOMMENT_SUCCESS,
-  RECOMMENT_FAILURE
+  RECOMMENT_FAILURE,
+  COMMENT_LIST,
+  COMMENT_LIST_SUCCESS,
+  COMMENT_LIST_FAILURE
 } from './Types';
 import axios from 'axios';
 import { storageGet } from './helper/localStorage';
@@ -230,5 +236,76 @@ export function recommendFailure(error){
   return {
     type: RECOMMENT_FAILURE,
     error
+  }
+}
+
+
+export function listaddRequest(id){
+
+  return (dispatch) => {
+    dispatch(listadd())
+
+    return axios.get(`/api/list/addlist/${id}`)
+    .then((response) => {
+      dispatch(listaddSuccess(response.data.result))
+    }).catch((error) => {
+      dispatch(listaddFailure(error.response.data.code))
+    })
+  }
+}
+
+export function listadd(){
+  return {
+    type: LIST_ADD
+  }
+}
+
+export function listaddSuccess(result){
+  return {
+    type: LIST_ADD_SUCCESS,
+    result
+  }
+}
+
+export function listaddFailure(error){
+  return {
+    type: LIST_ADD_FAILURE,
+    error
+  }
+}
+
+export function commentListRequest(id){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+  return (dispatch) => {
+    dispatch(commentList())
+
+    return axios.get(`/api/comment/${id}`, config)
+    .then((response) => {
+      dispatch(commentListSuccess(response.data.result))
+    }).catch((error) => {
+      dispatch(commentListFailure())
+    })
+  }
+}
+
+export function commentList(){
+  return {
+    type: COMMENT_LIST
+  }
+}
+
+export function commentListSuccess(result){
+  return {
+    type: COMMENT_LIST_SUCCESS,
+    result
+  }
+}
+
+export function commentListFailure(){
+  return {
+    type: COMMENT_LIST_FAILURE
   }
 }

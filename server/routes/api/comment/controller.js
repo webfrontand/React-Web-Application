@@ -2,8 +2,35 @@ import mongoose from 'mongoose';
 import Post from '../../../models/post';
 import Comment from '../../../models/comment';
 
-exports.writer = (req, res) => {
+
+
+exports.read = (req, res) => {
   const { _id } = req.decoded;
+  const { postId } = req.params;
+
+  if(!mongoose.Types.ObjectId.isValid(postId)){
+    return res.status(400).json({
+      code: 0
+    });
+  }
+
+  Post.findById(postId, (err, post) => {
+    if(!post){
+      return res.status(400).json({
+        code: 1
+      });
+    }
+
+    Comment.find({ postId}, (err, result) => {
+      return res.json({
+        result
+      });
+    });
+  });
+}
+
+exports.writer = (req, res) => {
+  const { _id, username, thumbnail } = req.decoded;
   const { postId } = req.params;
   const { article } = req.body;
 
@@ -28,7 +55,9 @@ exports.writer = (req, res) => {
     const comment = new Comment({
       postId,
       writer: _id,
-      article
+      article,
+      username,
+      thumbnail
     });
 
     comment.save((err, result) => {

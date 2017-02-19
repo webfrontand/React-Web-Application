@@ -23,7 +23,7 @@ class Recommend extends Component {
           className="btn waves-effect marginRight waves-light pink accent-3"
           onClick={this.handleRecommend}
         >
-          추천
+          { this.props.starred.indexOf(this.props.result.writer) > -1 ? '취소': '추천' }
         </button>
         [{ this.props.starred.length }]개
         </li>

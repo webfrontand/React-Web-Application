@@ -5,6 +5,9 @@ import {
   LIST,
   LIST_SUCCESS,
   LIST_FAILURE,
+  LIST_ADD,
+  LIST_ADD_SUCCESS,
+  LIST_ADD_FAILURE,
   DETAIL,
   DETAIL_SUCCESS,
   DETAIL_FAILURE,
@@ -16,7 +19,10 @@ import {
   DETAIL_DELETE_FAILURE,
   RECOMMENT,
   RECOMMENT_SUCCESS,
-  RECOMMENT_FAILURE
+  RECOMMENT_FAILURE,
+  COMMENT_LIST,
+  COMMENT_LIST_SUCCESS,
+  COMMENT_LIST_FAILURE
 } from '../actions/Types';
 import update from 'react-addons-update';
 
@@ -45,6 +51,15 @@ const initialState = {
   recommend: {
     status: 'INIT',
     error: -1
+  },
+  listadd: {
+    status: 'INIT',
+    error: -1,
+    last: false
+  },
+  comment: {
+    status: 'INIT',
+    list: []
   }
 }
 
@@ -54,6 +69,9 @@ export default function post(state = initialState, action){
       return update(state, {
         postrequest: {
           status: { $set: 'WAIT' }
+        },
+        listadd: {
+          last: { $set: false }
         }
       });
     case POST_SUCCESS:
@@ -73,6 +91,9 @@ export default function post(state = initialState, action){
       return update(state, {
         data: {
           status: { $set: 'WAIT' }
+        },
+        listadd: {
+          last: { $set: false }
         }
       });
     case LIST_SUCCESS:
@@ -171,6 +192,50 @@ export default function post(state = initialState, action){
         recommend: {
           status: { $set: 'FAILURE' },
           error: { $set: action.error }
+        }
+      });
+    case LIST_ADD:
+      return update(state, {
+        listadd: {
+          status: { $set: 'WAIT' },
+          last: { $set: false }
+        }
+      });
+    case LIST_ADD_SUCCESS:
+      console.log(action.result.length);
+      return update(state, {
+        listadd: {
+          status: { $set: 'SUCCESS' },
+          last: { $set: action.result.length < 5 ? true : false }
+        },
+        data: {
+          list: { $push: action.result }
+        }
+      });
+    case LIST_ADD_FAILURE:
+      return update(state, {
+        listadd: {
+          status: { $set: 'FAILURE' },
+          error: { $set: action.error }
+        }
+      });
+    case COMMENT_LIST:
+      return update(state, {
+        comment: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case COMMENT_LIST_SUCCESS:
+      return update(state, {
+        comment: {
+          status: { $set: 'SUCCESS' },
+          list: { $set: action.result }
+        }
+      });
+    case COMMENT_LIST_FAILURE:
+      return update(state, {
+        comment: {
+          status: { $set: 'FAILURE' }
         }
       })
     default:

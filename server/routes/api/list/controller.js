@@ -26,5 +26,14 @@ exports.listdetail = (req, res) => {
       result
     })
   })
+}
 
+exports.addlist = (req, res) => {
+  const id = req.params.id;
+
+  Post.find({ _id: { $lt: id } }).sort({_id: -1}).limit(5).exec((ecc, result) => {
+    return res.status(200).json({
+      result
+    })
+  })
 }

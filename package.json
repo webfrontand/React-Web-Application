@@ -1,5 +1,5 @@
 {
-  "name": "bookmark",
+  "name": "¸ðÀ½",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -16,13 +16,10 @@
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "express-session": "^1.14.0",
     "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.5.7",
     "morgan": "^1.7.0",
     "multer": "^1.3.0",
-    "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1",
     "path": "^0.12.7",
     "react": "^15.1.0",
     "react-addons-update": "^15.3.0",

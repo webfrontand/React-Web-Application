@@ -11,6 +11,12 @@ const Comment = new Schema({
   },
   article: {
     type: String
+  },
+  username: {
+    type: String
+  },
+  thumbnail: {
+    type: String
   }
 });
 

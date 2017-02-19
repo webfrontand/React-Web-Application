@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { listRequest } from '../actions/post';
+import { listRequest, listaddRequest } from '../actions/post';
 import { Link } from 'react-router';
 
 class List extends Component {
+  constructor(props){
+    super(props);
+
+    this.handleAdd = this.handleAdd.bind(this);
+  }
+  handleAdd(){
+    let lastid = this.props.lists[this.props.lists.length-1]._id;
+
+    this.props.listaddRequest(lastid);
+  }
   componentDidMount(){
     this.props.listRequest();
   }
@@ -29,9 +39,16 @@ class List extends Component {
     return (
       <div className="marginTop">
           <ul className="collection">
-            <li className="collection-item quote">글 목록</li>
+            <li className="collection-item quote"><h1>글 목록</h1></li>
             { this.props.lists.length == 0 ? empty : mapTo(this.props.lists)}
 
+            <button
+              className="btn submitBtn waves-effect waves-light pink accent-3"
+              onClick={this.handleAdd}
+              disabled={this.props.listaddLast ? true : false}
+            >
+              { this.props.listaddLast ? '끝' : '더보기' }
+            </button>
           </ul>
       </div>
     )
@@ -41,13 +58,17 @@ class List extends Component {
 
 function mapStateToProps(state){
   return {
-    lists: state.post.data.list
+    lists: state.post.data.list,
+    listaddStatus: state.post.listadd.status,
+    listaddError: state.post.listadd.error,
+    listaddLast: state.post.listadd.last
   }
 }
 
 function mapDispatchToProps(dispatch){
   return bindActionCreators({
-    listRequest
+    listRequest,
+    listaddRequest
   }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(List);
