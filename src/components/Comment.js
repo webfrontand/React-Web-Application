@@ -1,8 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { commentRemoveRequest } from '../actions/post';
 
 class Comment extends Component {
+  constructor(props){
+    super(props);
+    this.handleRemove = this.handleRemove.bind(this);
+  }
+  handleRemove(){
+    this.props.commentRemoveRequest(this.props.comment[this.props.index]._id, this.props.index).then(
+      () => {
+        if(this.props.commentremoveStatus === "SUCCESS"){
+          let $toastContent = $('<span style="color: #fff">삭제 완료!</span>');
+          Materialize.toast($toastContent, 2000);
+        }
+      }
+    )
+
+  }
   render(){
-    const { _id, article, thumbnail, username } = this.props.comments
+    const { _id, article, thumbnail, username, writer } = this.props.comments;
+    const option = (
+      <div>
+        <button onClick={this.handleRemove}>삭제</button>
+        <button>수정</button>
+      </div>
+    )
     return (
       <div>
         <ul className="collection">
@@ -15,6 +39,7 @@ class Comment extends Component {
                 />
               </div>
               <div className="col s12 m6 l6">
+                { this.props.check == writer ? option : undefined }
                 <h2>{username}</h2>
                 <p>
                   {article}
@@ -28,4 +53,16 @@ class Comment extends Component {
   }
 }
 
-export default Comment;
+function mapStateToProps(state){
+  return {
+    comment: state.post.comment.list,
+    commentremoveStatus: state.post.commentremove.status
+  }
+}
+
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({
+    commentRemoveRequest
+  }, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

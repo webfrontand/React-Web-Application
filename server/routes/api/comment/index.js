@@ -3,6 +3,7 @@ import controller from './controller';
 const router = express.Router();
 
 
+router.get('/:postId/:lastId', controller.moreread);
 router.get('/:postId', controller.read);
 router.post('/:postId', controller.writer);
 router.delete('/:id', controller.delete);

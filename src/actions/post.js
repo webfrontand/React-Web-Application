@@ -22,7 +22,16 @@ import {
   RECOMMENT_FAILURE,
   COMMENT_LIST,
   COMMENT_LIST_SUCCESS,
-  COMMENT_LIST_FAILURE
+  COMMENT_LIST_FAILURE,
+  COMMENT_ADD,
+  COMMENT_ADD_SUCCESS,
+  COMMENT_ADD_FAILURE,
+  COMMENT_MORE,
+  COMMENT_MORE_SUCCESS,
+  COMMENT_MORE_FAILURE,
+  COMMENT_REMOVE,
+  COMMENT_REMOVE_SUCCESS,
+  COMMENT_REMOVE_FAILURE
 } from './Types';
 import axios from 'axios';
 import { storageGet } from './helper/localStorage';
@@ -307,5 +316,115 @@ export function commentListSuccess(result){
 export function commentListFailure(){
   return {
     type: COMMENT_LIST_FAILURE
+  }
+}
+
+export function commentAddRequest(id, article){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+
+  return (dispatch) => {
+    dispatch(commentAdd());
+    return axios.post(`/api/comment/${id}`, { article }, config)
+    .then((response) => {
+      dispatch(commentAddSuccess(response.data.result));
+    }).catch((error) => {
+      dispatch(commentAddFailure(error.response.data.code));
+    })
+  }
+}
+
+export function commentAdd(){
+  return {
+    type: COMMENT_ADD
+  }
+}
+
+export function commentAddSuccess(result){
+  return {
+    type: COMMENT_ADD_SUCCESS,
+    result
+  }
+}
+
+export function commentAddFailure(error){
+  return {
+    type: COMMENT_ADD_FAILURE,
+    error
+  }
+}
+
+export function commentMoreRequest(postId, lastId){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+
+  return (dispatch) => {
+    dispatch(commentMore())
+    return axios.get(`/api/comment/${postId}/${lastId}`, config)
+    .then((response) => {
+      dispatch(commentMoreSuccess(response.data.result))
+    }).catch((error) => {
+      dispatch(commentMoreFailure(error.response.data.code))
+    })
+  }
+}
+
+export function commentMore(){
+  return {
+    type: COMMENT_MORE
+  }
+}
+
+export function commentMoreSuccess(result){
+  return {
+    type: COMMENT_MORE_SUCCESS,
+    result
+  }
+}
+
+export function commentMoreFailure(error){
+  return {
+    type: COMMENT_MORE_FAILURE,
+    error
+  }
+}
+
+export function commentRemoveRequest(id, index){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+
+  return (dispatch) => {
+    dispatch(commentRemove())
+    return axios.delete(`/api/comment/${id}`, config)
+    .then((response) => {
+      dispatch(commentRemoveSuccess(index))
+    }).catch((error) => {
+      dispatch(commentRemoveFailure())
+    })
+  }
+}
+
+export function commentRemove(){
+  return {
+    type: COMMENT_REMOVE
+  }
+}
+
+export function commentRemoveSuccess(index){
+  return {
+    type: COMMENT_REMOVE_SUCCESS,
+    index
+  }
+}
+
+export function commentRemoveFailure(){
+  return {
+    type: COMMENT_REMOVE_FAILURE
   }
 }

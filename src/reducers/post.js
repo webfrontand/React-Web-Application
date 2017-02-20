@@ -22,7 +22,16 @@ import {
   RECOMMENT_FAILURE,
   COMMENT_LIST,
   COMMENT_LIST_SUCCESS,
-  COMMENT_LIST_FAILURE
+  COMMENT_LIST_FAILURE,
+  COMMENT_ADD,
+  COMMENT_ADD_SUCCESS,
+  COMMENT_ADD_FAILURE,
+  COMMENT_MORE,
+  COMMENT_MORE_SUCCESS,
+  COMMENT_MORE_FAILURE,
+  COMMENT_REMOVE,
+  COMMENT_REMOVE_SUCCESS,
+  COMMENT_REMOVE_FAILURE
 } from '../actions/Types';
 import update from 'react-addons-update';
 
@@ -60,6 +69,19 @@ const initialState = {
   comment: {
     status: 'INIT',
     list: []
+  },
+  commentadd: {
+    status: 'INIT',
+    error: -1
+  },
+  commentmore: {
+    status: 'INIT',
+    error: -1,
+    last: false
+  },
+  commentremove: {
+    status: 'INIT',
+    error: -1
   }
 }
 
@@ -235,6 +257,72 @@ export default function post(state = initialState, action){
     case COMMENT_LIST_FAILURE:
       return update(state, {
         comment: {
+          status: { $set: 'FAILURE' }
+        }
+      });
+    case COMMENT_ADD:
+      return update(state, {
+        commentadd: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case COMMENT_ADD_SUCCESS:
+      return update(state, {
+        commentadd: {
+          status: { $set: 'SUCCESS' }
+        },
+        comment: {
+          list: { $unshift: [action.result] }
+        }
+      });
+    case COMMENT_ADD_FAILURE:
+      return update(state, {
+        commentadd: {
+          status: { $set: 'FAILURE' },
+          error: { $set: action.error }
+        }
+      });
+    case COMMENT_MORE:
+      return update(state, {
+        commentmore: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case COMMENT_MORE_SUCCESS:
+      return update(state, {
+        commentmore: {
+          status: { $set: 'SUCCESS' },
+          last: { $set: action.result.length < 2 ? true : false}
+        },
+        comment: {
+          list: { $push: action.result }
+        }
+      });
+    case COMMENT_MORE_FAILURE:
+      return update(state, {
+        commentmore: {
+          status: { $set: 'FAILURE' },
+          error: { $set: action.error }
+        }
+      });
+    case COMMENT_REMOVE:
+      return update(state, {
+        commentremove: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case COMMENT_REMOVE_SUCCESS:
+      return update(state, {
+        commentremove: {
+          status: { $set: 'SUCCESS' }
+        },
+        comment: {
+          list: { $splice: [[action.index, 1]]}
+        }
+      });
+    case COMMENT_REMOVE_FAILURE:
+      return update(state, {
+        commentremove: {
           status: { $set: 'FAILURE' }
         }
       })

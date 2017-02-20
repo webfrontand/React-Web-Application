@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { detailRequest, detailupdateRequest, detaildeleteRequest, commentListRequest } from '../actions/post';
+import { detailRequest, detailupdateRequest, detaildeleteRequest, commentListRequest, commentMoreRequest } from '../actions/post';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
-import { Recommend, Comment } from '../components';
+import { Recommend, Comment, CommentBox } from '../components';
 
 class ListDetail extends Component {
   constructor(props){
@@ -19,7 +19,7 @@ class ListDetail extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
-
+    this.handleMore = this.handleMore.bind(this);
   }
 
   handleRemove(){
@@ -80,6 +80,11 @@ class ListDetail extends Component {
     let nextState = {};
     nextState[e.target.name] = e.target.value;
     this.setState(nextState);
+  }
+
+  handleMore(){
+    let lastId = this.props.comments[this.props.comments.length-1]._id;
+    return this.props.commentMoreRequest(this.props.params._id, lastId)
   }
   componentDidMount(){
     this.props.detailRequest(this.props.params._id);
@@ -187,6 +192,8 @@ class ListDetail extends Component {
       return data.map((result, i) => {
         return (
           <Comment
+            index={i}
+            check={ this.props.userinfo._id }
             key={i}
             comments={result}
           />
@@ -196,7 +203,15 @@ class ListDetail extends Component {
     return (
       <div>
       { this.state.isEdit ? edit : basic }
+      <CommentBox/>
       { mapTo(this.props.comments)}
+      <button
+        className="btn submitBtn waves-effect waves-light pink accent-3"
+        onClick={this.handleMore}
+        disabled={this.props.commentLast ? true : false}
+      >
+        {this.props.commentLast ? '끝' : '더보기' }
+      </button>
       </div>
     )
   }
@@ -210,7 +225,10 @@ function mapStateToProps(state){
     updateError: state.post.update.error,
     deleteStatus: state.post.delete.status,
     deleteError: state.post.delete.error,
-    comments: state.post.comment.list
+    comments: state.post.comment.list,
+    commentmoreStatus: state.post.commentmore.status,
+    commentmoreError: state.post.commentmore.error,
+    commentLast: state.post.commentmore.last
   }
 }
 function mapDispatchToProps(dispatch){
@@ -218,7 +236,8 @@ function mapDispatchToProps(dispatch){
     detailRequest,
     detailupdateRequest,
     detaildeleteRequest,
-    commentListRequest
+    commentListRequest,
+    commentMoreRequest
   }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ListDetail);
