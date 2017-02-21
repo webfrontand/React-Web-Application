@@ -17,7 +17,7 @@ import config from './helper/config';
 const app = express();
 const port = 3000;
 const devPort = 4000;
-
+console.log('test');
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded())
