@@ -31,7 +31,16 @@ import {
   COMMENT_MORE_FAILURE,
   COMMENT_REMOVE,
   COMMENT_REMOVE_SUCCESS,
-  COMMENT_REMOVE_FAILURE
+  COMMENT_REMOVE_FAILURE,
+  COMMENT_UPDATE,
+  COMMENT_UPDATE_SUCCESS,
+  COMMENT_UPDATE_FAILURE,
+  SHARE,
+  SHARE_SUCCESS,
+  SHARE_FAILURE,
+  MESSAGE,
+  MESSAGE_SUCCESS,
+  MESSAGE_FAILURE
 } from '../actions/Types';
 import update from 'react-addons-update';
 
@@ -82,6 +91,19 @@ const initialState = {
   commentremove: {
     status: 'INIT',
     error: -1
+  },
+  commentupdate: {
+    status: 'INIT',
+    error: -1
+  },
+  share: {
+    status: 'INIT',
+    error: -1
+  },
+  message: {
+    status: 'INIT',
+    error: -1,
+    list: []
   }
 }
 
@@ -323,6 +345,73 @@ export default function post(state = initialState, action){
     case COMMENT_REMOVE_FAILURE:
       return update(state, {
         commentremove: {
+          status: { $set: 'FAILURE' }
+        }
+      });
+    case COMMENT_UPDATE:
+      return update(state, {
+        commentupdate: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case COMMENT_UPDATE_SUCCESS:
+      return update(state, {
+        commentupdate: {
+          status: { $set: 'SUCCESS'}
+        },
+        comment: {
+          list: {
+            [action.index]: { $set: action.result }
+          }
+        }
+      });
+    case COMMENT_UPDATE_FAILURE:
+      return update(state, {
+        commentupdate: {
+          status: { $set: 'FAILURE' },
+          error: { $set: action.error }
+        }
+      });
+    case SHARE:
+      return update(state, {
+        share: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case SHARE_SUCCESS:
+      return update(state, {
+        share: {
+          status: { $set: 'SUCCESS' }
+        },
+        detail: {
+          result: {
+            share: { $set: action.result }
+          }
+        }
+      });
+    case SHARE_FAILURE:
+      return update(state, {
+        share: {
+          status: { $set: 'FAILURE'}
+        }
+      });
+    case MESSAGE:
+      return update(state, {
+        message: {
+          status: { $set: 'WAIT' },
+          error: { $set: -1 }
+        }
+      });
+    case MESSAGE_SUCCESS:
+      return update(state, {
+        message: {
+          status: { $set: 'SUCCESS' },
+          list: { $set: action.result }
+        }
+      });
+    case MESSAGE_FAILURE:
+      return update(state, {
+        message: {
           status: { $set: 'FAILURE' }
         }
       })

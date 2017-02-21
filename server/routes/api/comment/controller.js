@@ -137,12 +137,6 @@ exports.update = (req, res) => {
       })
     }
 
-    if(_id != comment.writer){
-      return res.status(400).json({
-        code: 3
-      })
-    }
-
     comment.article = article;
 
     comment.save((err, result) => {

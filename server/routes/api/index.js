@@ -6,6 +6,8 @@ import star from './star';
 import comment from './comment';
 import share from './share';
 import list from './list';
+import message from './message';
+
 import authMiddleware from '../middlewares/auth';
 
 const router = express.Router();
@@ -19,5 +21,6 @@ router.use('/user', user);
 router.use('/star', star);
 router.use('/comment', comment);
 router.use('/share', share);
+router.use('/message', message);
 
 export default router;

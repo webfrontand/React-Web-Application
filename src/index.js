@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App, Home, Login, Register, Mypage, Out, Thumbnail, List, Writer, ListDetail } from 'containers';
+import { App, Home, Login, Register, Mypage, Out, Thumbnail, List, Writer, ListDetail, Message } from 'containers';
 
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
@@ -33,6 +33,7 @@ ReactDOM.render(
                 <Route path="/list" component={List} />
                 <Route path="/list/:_id" component={ListDetail} />
                 <Route path="writer" component={Writer} />
+                <Route path="message" component={Message} />
             </Route>
         </Router>
     </Provider>, rootElement

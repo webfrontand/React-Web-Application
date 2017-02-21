@@ -77,11 +77,7 @@ exports.permission = (req, res) => {
       });
     }
 
-    if(_id != post.writer){
-      return res.status(400).json({
-        code: 3
-      });
-    }
+
 
     let updateData = Object.assign({}, mission, mission.shareBoolean = true);
     post.share.splice(index, 1);

@@ -8,6 +8,7 @@ import Thumbnail from './Thumbnail';
 import List from './List';
 import Writer from './Writer'
 import ListDetail from './ListDetail';
+import Message from './Message';
 
 export {
   App,
@@ -19,5 +20,6 @@ export {
   Thumbnail,
   List,
   Writer,
-  ListDetail
+  ListDetail,
+  Message
 };

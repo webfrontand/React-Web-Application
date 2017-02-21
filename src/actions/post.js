@@ -31,7 +31,16 @@ import {
   COMMENT_MORE_FAILURE,
   COMMENT_REMOVE,
   COMMENT_REMOVE_SUCCESS,
-  COMMENT_REMOVE_FAILURE
+  COMMENT_REMOVE_FAILURE,
+  COMMENT_UPDATE,
+  COMMENT_UPDATE_SUCCESS,
+  COMMENT_UPDATE_FAILURE,
+  SHARE,
+  SHARE_SUCCESS,
+  SHARE_FAILURE,
+  MESSAGE,
+  MESSAGE_SUCCESS,
+  MESSAGE_FAILURE
 } from './Types';
 import axios from 'axios';
 import { storageGet } from './helper/localStorage';
@@ -426,5 +435,116 @@ export function commentRemoveSuccess(index){
 export function commentRemoveFailure(){
   return {
     type: COMMENT_REMOVE_FAILURE
+  }
+}
+
+export function commentUpdateRequest(id, article, index){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+
+  return (dispatch) => {
+    dispatch(commentUpdate())
+    return axios.put(`/api/comment/${id}`, { article }, config)
+    .then((response) => {
+      dispatch(commentUpdateSuccess(response.data.result, index));
+    }).catch((error) => {
+      dispatch(commentUpdateFailure(error.response.data.code));
+    });
+  }
+}
+
+export function commentUpdate(){
+  return {
+    type: COMMENT_UPDATE
+  }
+}
+
+export function commentUpdateSuccess(result, index){
+  return {
+    type: COMMENT_UPDATE_SUCCESS,
+    result,
+    index
+  }
+}
+
+export function commentUpdateFailure(error){
+  return {
+    type: COMMENT_UPDATE_FAILURE,
+    error
+  }
+}
+
+export function shareRequest(id){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+
+  return (dispatch) => {
+    dispatch(share())
+    return axios.post(`/api/share/${id}`,{}, config)
+    .then((response) => {
+      console.log(response.data.user);
+      dispatch(shareSuccess(response.data.user));
+    }).catch((error) => {
+      dispatch(shareFailure());
+    })
+  }
+}
+
+export function share(){
+  return {
+    type: SHARE
+  }
+}
+
+export function shareSuccess(result){
+  return {
+    type: SHARE_SUCCESS,
+    result
+  }
+}
+
+export function shareFailure(){
+  return {
+    type: SHARE_FAILURE
+  }
+}
+
+export function messageRequest(id){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+
+  return (dispatch) => {
+    dispatch(message())
+    return axios.get(`/api/message/${id}`, config)
+    .then((response) => {
+      dispatch(messageSuccess(response.data.result))
+    }).catch((error) => {
+      dispatch(messageFailure())
+    })
+  }
+}
+
+export function message(){
+  return {
+    type: MESSAGE
+  }
+}
+
+export function messageSuccess(result){
+  return {
+    type: MESSAGE_SUCCESS,
+    result
+  }
+}
+
+export function messageFailure(){
+  return {
+    type: MESSAGE_FAILURE
   }
 }
