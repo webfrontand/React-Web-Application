@@ -40,7 +40,13 @@ import {
   SHARE_FAILURE,
   MESSAGE,
   MESSAGE_SUCCESS,
-  MESSAGE_FAILURE
+  MESSAGE_FAILURE,
+  PERMISSION,
+  PERMISSION_FAILURE,
+  PERMISSION_SUCCESS,
+  REJECT,
+  REJECT_SUCCESS,
+  REJECT_FAILURE
 } from '../actions/Types';
 import update from 'react-addons-update';
 
@@ -104,6 +110,14 @@ const initialState = {
     status: 'INIT',
     error: -1,
     list: []
+  },
+  permission: {
+    status: 'INIT',
+    error: -1
+  },
+  reject: {
+    status: 'INIT',
+    error: -1
   }
 }
 
@@ -412,6 +426,48 @@ export default function post(state = initialState, action){
     case MESSAGE_FAILURE:
       return update(state, {
         message: {
+          status: { $set: 'FAILURE' }
+        }
+      });
+    case PERMISSION:
+      return update(state, {
+        permission: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case PERMISSION_SUCCESS:
+      return update(state, {
+        permission: {
+          status: { $set: 'SUCCESS' }
+        },
+        message: {
+          list: { $splice: [[action.index, 1]]}
+        }
+      });
+    case PERMISSION_FAILURE:
+      return update(state, {
+        permission: {
+          status: { $set: 'FAILURE' }
+        }
+      });
+    case REJECT:
+      return update(state, {
+        reject: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case REJECT_SUCCESS:
+      return update(state, {
+        reject: {
+          status: { $set: 'SUCCESS' }
+        },
+        message: {
+          list: { $splice: [[action.index, 1]]}
+        }
+      });
+    case REJECT_FAILURE:
+      return update(state, {
+        reject: {
           status: { $set: 'FAILURE' }
         }
       })

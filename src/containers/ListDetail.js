@@ -205,6 +205,7 @@ class ListDetail extends Component {
       { this.state.isEdit ? edit : basic }
       <CommentBox/>
       { mapTo(this.props.comments)}
+      <p>{ this.props.share.indexOf(this.props.userinfo._id) > -1 ? controller : undefined }</p>
       <button
         className="btn submitBtn waves-effect waves-light pink accent-3"
         onClick={this.handleMore}
@@ -212,6 +213,7 @@ class ListDetail extends Component {
       >
         {this.props.commentLast ? '끝' : '더보기' }
       </button>
+
       </div>
     )
   }
@@ -220,6 +222,7 @@ class ListDetail extends Component {
 function mapStateToProps(state){
   return {
     result: state.post.detail.result,
+    share: state.post.detail.result.shareUser,
     userinfo: state.authenticate.check.userinfo,
     updateStatus: state.post.update.status,
     updateError: state.post.update.error,
@@ -240,4 +243,9 @@ function mapDispatchToProps(dispatch){
     commentMoreRequest
   }, dispatch)
 }
+
+ListDetail.defaultProps = {
+  share: []
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(ListDetail);

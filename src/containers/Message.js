@@ -1,23 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { messageRequest } from '../actions/post';
+import { messageRequest, permissionRequest, rejectRequest } from '../actions/post';
 
 class Message extends Component {
   constructor(props){
     super(props);
+
+    this.handleClick = this.handleClick.bind(this)
+    this.handleRemove = this.handleRemove.bind(this);
   }
-  componentWillMount(){
+  handleClick(i){
+    this.props.permissionRequest(this.props.result[i].what, i, this.props.result[i]._id, this.props.result[i].from);
+  }
+
+  handleRemove(i){
+    this.props.rejectRequest(this.props.result[i]._id, i)
+  }
+  componentDidMount(){
     this.props.messageRequest(this.props.id);
   }
+
   render(){
     const mapTo = (data) => {
       return data.map((result, i) => {
         return (
           <div key={result._id}>
             {result.from}님께서 회원님({result.to})에게 {result.alert}를 신청하셨습니다.
-            <button>수락하기</button>
-            <button>거절하기</button>
+            <button onClick={ () => { this.handleClick(i) }}>수락하기</button>
+            <button onClick={ () => { this.handleRemove(i) }}>거절하기</button>
           </div>
         )
       })
@@ -46,7 +57,9 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
   return bindActionCreators({
-    messageRequest
+    messageRequest,
+    permissionRequest,
+    rejectRequest
   }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Message);

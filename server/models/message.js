@@ -12,6 +12,9 @@ const Message = new Schema({
   alert: {
     type: String
   },
+  what: {
+    type: String
+  },
   date: {
     type: String,
     default: new Date()

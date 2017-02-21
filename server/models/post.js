@@ -8,7 +8,8 @@ const Post = new Schema({
   title: String,
   article: String,
   starred: [],
-  share: [],
+  shareRequestUser: [],
+  shareUser: [],
   date: {
     type: String,
     default: new Date()

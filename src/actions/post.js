@@ -40,7 +40,13 @@ import {
   SHARE_FAILURE,
   MESSAGE,
   MESSAGE_SUCCESS,
-  MESSAGE_FAILURE
+  MESSAGE_FAILURE,
+  PERMISSION,
+  PERMISSION_SUCCESS,
+  PERMISSION_FAILURE,
+  REJECT,
+  REJECT_SUCCESS,
+  REJECT_FAILURE
 } from './Types';
 import axios from 'axios';
 import { storageGet } from './helper/localStorage';
@@ -546,5 +552,76 @@ export function messageSuccess(result){
 export function messageFailure(){
   return {
     type: MESSAGE_FAILURE
+  }
+}
+
+
+export function permissionRequest(id, index, messageId, person){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+  return (dispatch) => {
+    dispatch(permission());
+    return axios.put(`/api/share/${id}/${index}/${messageId}/${person}`,{}, config)
+    .then((response) => {
+      dispatch(permissionSuccess(index))
+    }).catch((error) => {
+      dispatch(permissionFailure())
+    })
+  }
+}
+
+export function permission(){
+  return {
+    type: PERMISSION
+  }
+}
+
+export function permissionSuccess(index){
+  return {
+    type: PERMISSION_SUCCESS,
+    index
+  }
+}
+
+export function permissionFailure(){
+  return {
+    type: PERMISSION_FAILURE
+  }
+}
+
+
+export function rejectRequest(id, index){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+  return (dispatch) => {
+    dispatch(reject());
+    return axios.put(`/api/share/reject/${id}`, {}, config)
+    .then((response) => {
+      dispatch(rejectSuccess(index))
+    }).catch((error) => {
+      dispatch(rejectFailure())
+    });
+  }
+}
+export function reject(){
+  return {
+    type: REJECT
+  }
+}
+
+export function rejectSuccess(index){
+  return {
+    type: REJECT_SUCCESS,
+    index
+  }
+}
+
+export function rejectFailure(){
+  return {
+    type: REJECT_FAILURE
   }
 }

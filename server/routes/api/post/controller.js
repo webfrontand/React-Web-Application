@@ -98,11 +98,12 @@ exports.update = (req,res) => {
       });
     }
 
-    if(_id != post.writer){
-      return res.status(400).json({
-        code: 3
-      });
-    }
+
+    // if(_id != post.writer){
+    //   return res.status(400).json({
+    //     code: 3
+    //   });
+    // }
 
     post.title = title;
     post.article = article;

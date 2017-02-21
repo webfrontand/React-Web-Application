@@ -12,7 +12,7 @@ class Recommend extends Component {
 
   }
   handleRecommend(){
-    return this.props.recommentRequest(this.props.result._id)
+    return this.props.recommentRequest(this.props.result._id);
   }
   handleShare(){
     return this.props.shareRequest(this.props.result._id)
@@ -26,7 +26,7 @@ class Recommend extends Component {
           className="btn waves-effect marginRight waves-light pink accent-3"
           onClick={this.handleRecommend}
         >
-          { this.props.starred.indexOf(this.props.result.writer) > -1 ? '취소': '추천' }
+          { this.props.starred.indexOf(this.props.userinfo._id) > -1 ? '취소': '추천' }
         </button>
         [{ this.props.starred.length }]개
         </li>
@@ -48,6 +48,7 @@ function mapStateToProps(state){
   return {
     recommendStatus: state.post.recommend.status,
     recommendError: state.post.recommend.error,
+    userinfo: state.authenticate.check.userinfo,
     result: state.post.detail.result,
     starred: state.post.detail.result.starred,
     shareStatus: state.post.share.status,

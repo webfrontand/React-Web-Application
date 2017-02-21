@@ -5,6 +5,7 @@ import controller from './controller';
 const router = express.Router();
 
 router.post('/:id', controller.share);
-router.put('/:postId/:index/', controller.permission);
+router.put('/:postId/:index/:messageId/:person', controller.permission);
+router.put('/reject/:messageId', controller.reject);
 
 export default router;
