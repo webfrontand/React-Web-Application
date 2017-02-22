@@ -9,6 +9,7 @@ import List from './List';
 import Writer from './Writer'
 import ListDetail from './ListDetail';
 import Message from './Message';
+import Admin from './Admin';
 
 export {
   App,
@@ -21,5 +22,6 @@ export {
   List,
   Writer,
   ListDetail,
-  Message
+  Message,
+  Admin
 };

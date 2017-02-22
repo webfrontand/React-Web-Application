@@ -8,6 +8,9 @@ import {
   LIST_ADD,
   LIST_ADD_SUCCESS,
   LIST_ADD_FAILURE,
+  LIST_ADMIN,
+  LIST_ADMIN_SUCCESS,
+  LIST_ADMIN_FAILURE,
   DETAIL,
   DETAIL_SUCCESS,
   DETAIL_FAILURE,
@@ -116,6 +119,11 @@ const initialState = {
     error: -1
   },
   reject: {
+    status: 'INIT',
+    error: -1
+  },
+  admin: {
+    lists: [],
     status: 'INIT',
     error: -1
   }
@@ -399,7 +407,7 @@ export default function post(state = initialState, action){
         },
         detail: {
           result: {
-            share: { $set: action.result }
+            shareRequestUser: { $set: action.result }
           }
         }
       });
@@ -468,6 +476,25 @@ export default function post(state = initialState, action){
     case REJECT_FAILURE:
       return update(state, {
         reject: {
+          status: { $set: 'FAILURE' }
+        }
+      });
+    case LIST_ADMIN:
+      return update(state, {
+        admin: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case LIST_ADMIN_SUCCESS:
+      return update(state, {
+        admin: {
+          lists: { $set: action.lists },
+          status: { $set: 'SUCCESS'}
+        }
+      });
+    case LIST_ADMIN_FAILURE:
+      return update(state, {
+        admin: {
           status: { $set: 'FAILURE' }
         }
       })

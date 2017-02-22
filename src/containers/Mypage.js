@@ -191,6 +191,13 @@ class Mypage extends Component {
                 메시지
               </Link>
             </li>
+            <li className="collection-item">
+              <Link
+                className="textblack"
+                to="/admin">
+                게시글 관리
+              </Link>
+            </li>
           </ul>
         </div>
         <div className="col s12 m12 l9">

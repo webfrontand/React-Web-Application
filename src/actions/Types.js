@@ -32,6 +32,10 @@ export const LIST = "LIST";
 export const LIST_SUCCESS = "LIST_SUCCESS";
 export const LIST_FAILURE = "LIST_FAILURE";
 
+export const LIST_ADMIN = "LIST_ADMIN";
+export const LIST_ADMIN_SUCCESS = "LIST_ADMIN_SUCCESS";
+export const LIST_ADMIN_FAILURE = "LIST_ADMIN_FAILURE";
+
 export const LIST_ADD = "LIST_ADD";
 export const LIST_ADD_SUCCESS = "LIST_ADD_SUCCESS";
 export const LIST_ADD_FAILURE = "LIST_ADD_FAILURE";

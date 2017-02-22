@@ -5,6 +5,9 @@ import {
   LIST,
   LIST_SUCCESS,
   LIST_FAILURE,
+  LIST_ADMIN,
+  LIST_ADMIN_SUCCESS,
+  LIST_ADMIN_FAILURE,
   LIST_ADD,
   LIST_ADD_SUCCESS,
   LIST_ADD_FAILURE,
@@ -81,6 +84,39 @@ export function listFailure(){
     type: LIST_FAILURE
   }
 }
+
+
+export function listAdminRequest(id){
+  return (dispatch) => {
+    dispatch(listAdmin());
+    return axios.get(`/api/list/writer/${id}`)
+    .then((response) => {
+      dispatch(listAdminSuccess(response.data.result));
+    }).catch((error) => {
+      dispatch(listAdminFailure());
+    })
+  }
+}
+
+export function listAdmin(){
+  return {
+    type: LIST_ADMIN
+  }
+}
+export function listAdminSuccess(lists){
+  console.log(lists);
+  return {
+    type: LIST_ADMIN_SUCCESS,
+    lists
+  }
+}
+
+export function listAdminFailure(){
+  return {
+    type: LIST_ADMIN_FAILURE
+  }
+}
+
 
 export function postRequest(title, article, username){
   return (dispatch) => {
@@ -492,8 +528,8 @@ export function shareRequest(id){
     dispatch(share())
     return axios.post(`/api/share/${id}`,{}, config)
     .then((response) => {
-      console.log(response.data.user);
-      dispatch(shareSuccess(response.data.user));
+      console.log(response.data.share);
+      dispatch(shareSuccess(response.data.share));
     }).catch((error) => {
       dispatch(shareFailure());
     })

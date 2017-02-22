@@ -203,9 +203,9 @@ class ListDetail extends Component {
     return (
       <div>
       { this.state.isEdit ? edit : basic }
+      <p>{ this.props.share.indexOf(this.props.userinfo._id) > -1 ? controller : undefined }</p>
       <CommentBox/>
       { mapTo(this.props.comments)}
-      <p>{ this.props.share.indexOf(this.props.userinfo._id) > -1 ? controller : undefined }</p>
       <button
         className="btn submitBtn waves-effect waves-light pink accent-3"
         onClick={this.handleMore}
@@ -223,6 +223,7 @@ function mapStateToProps(state){
   return {
     result: state.post.detail.result,
     share: state.post.detail.result.shareUser,
+    shareRequest: state.post.detail.result.shareRequestUser,
     userinfo: state.authenticate.check.userinfo,
     updateStatus: state.post.update.status,
     updateError: state.post.update.error,
@@ -245,7 +246,8 @@ function mapDispatchToProps(dispatch){
 }
 
 ListDetail.defaultProps = {
-  share: []
+  share: [],
+  shareRequest: []
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListDetail);

@@ -7,6 +7,26 @@ exports.list = (req, res) => {
   })
 }
 
+exports.writer = (req, res) => {
+  const writer = req.params.writer;
+  if(!mongoose.Types.ObjectId.isValid(writer)){
+    return res.status(400).json({
+      code: 0
+    });
+  }
+
+  Post.find({ writer }, (err, result) => {
+    if(!result){
+      return res.status(400).json({
+        code: 1
+      });
+    }
+    res.json({
+      result
+    })
+  })
+}
+
 exports.listdetail = (req, res) => {
 
   const id = req.params.id;

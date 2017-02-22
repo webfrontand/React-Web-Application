@@ -33,16 +33,32 @@ class Message extends Component {
         )
       })
     }
+
+
     return (
-      <div>
-        <ul className="collection">
-          <li className="collection-item">
-            <h1>받은 메시지</h1>
-          </li>
-          <li className="collection-item">
-            { this.props.result.length == 0 ? '아무 메시지도 없어요!' : mapTo(this.props.result)}
-          </li>
-        </ul>
+      <div className="row">
+        <div className="col s12 m12 l6">
+          <ul className="collection">
+            <li className="collection-item">
+              <h1>받은 메시지</h1>
+            </li>
+            <li className="collection-item">
+              { this.props.result.length == 0 ? '아무 메시지도 없어요!' : mapTo(this.props.result)}
+            </li>
+          </ul>
+        </div>
+
+        <div className="col s12 m12 l6">
+          <ul className="collection">
+            <li className="collection-item">
+              <h1>보낸 메시지</h1>
+            </li>
+            <li className="collection-item">
+              아직 구현 x
+            </li>
+          </ul>
+        </div>
+
       </div>
     )
   }
