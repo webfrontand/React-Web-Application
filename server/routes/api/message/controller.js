@@ -13,11 +13,22 @@ exports.list = (req,res) => {
 }
 
 
-exports.userinfo = (req, res) => {
+exports.receive = (req, res) => {
   const { _id } = req.decoded;
   const { id } = req.params;
 
   Message.find({ 'to': id }).exec((err, result) => {
+    return res.json({
+      result
+    })
+  })
+}
+
+exports.send = (req, res) => {
+  const { _id } = req.decoded;
+  const { id } = req.params;
+
+  Message.find({ 'from': id }).exec((err, result) => {
     return res.json({
       result
     })

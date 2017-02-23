@@ -7,6 +7,7 @@ import comment from './comment';
 import share from './share';
 import list from './list';
 import message from './message';
+import reject from './reject';
 
 import authMiddleware from '../middlewares/auth';
 
@@ -22,5 +23,6 @@ router.use('/star', star);
 router.use('/comment', comment);
 router.use('/share', share);
 router.use('/message', message);
+router.use('/reject', reject);
 
 export default router;

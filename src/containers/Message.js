@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { messageRequest, permissionRequest, rejectRequest } from '../actions/post';
+import { messageRequest, permissionRequest, rejectRequest, messageSendRequest, messageRejectRequest } from '../actions/post';
 
 class Message extends Component {
   constructor(props){
@@ -9,6 +9,7 @@ class Message extends Component {
 
     this.handleClick = this.handleClick.bind(this)
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleReject = this.handleReject.bind(this);
   }
   handleClick(i){
     this.props.permissionRequest(this.props.result[i].what, i, this.props.result[i]._id, this.props.result[i].from);
@@ -17,8 +18,13 @@ class Message extends Component {
   handleRemove(i){
     this.props.rejectRequest(this.props.result[i]._id, i)
   }
+
+  handleReject(what, from, index, messageid){
+    this.props.messageRejectRequest(what, from, index, messageid)
+  }
   componentDidMount(){
     this.props.messageRequest(this.props.id);
+    this.props.messageSendRequest(this.props.id);
   }
 
   render(){
@@ -34,6 +40,16 @@ class Message extends Component {
       })
     }
 
+    const mapToSend = (data) => {
+      return data.map((result, i) => {
+        return (
+          <div key={result._id}>
+            회원님({result.from})께서 {result.to}님에게 {result.alert}를 신청하셨습니다.
+            <button onClick={ () => { this.handleReject(result.what, result.from, i, result._id)}}>취소하기</button>
+          </div>
+        )
+      })
+    }
 
     return (
       <div className="row">
@@ -54,7 +70,7 @@ class Message extends Component {
               <h1>보낸 메시지</h1>
             </li>
             <li className="collection-item">
-              아직 구현 x
+              { this.props.send.length == 0 ? '아무 메시지도 없어요!' : mapToSend(this.props.send)}
             </li>
           </ul>
         </div>
@@ -67,7 +83,8 @@ class Message extends Component {
 function mapStateToProps(state){
   return {
     id: state.authenticate.check.userinfo._id,
-    result: state.post.message.list
+    result: state.post.message.list,
+    send: state.post.send.list
   }
 }
 
@@ -75,7 +92,9 @@ function mapDispatchToProps(dispatch){
   return bindActionCreators({
     messageRequest,
     permissionRequest,
-    rejectRequest
+    rejectRequest,
+    messageSendRequest,
+    messageRejectRequest
   }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Message);

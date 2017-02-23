@@ -49,7 +49,13 @@ import {
   PERMISSION_FAILURE,
   REJECT,
   REJECT_SUCCESS,
-  REJECT_FAILURE
+  REJECT_FAILURE,
+  MESSAGE_SEND,
+  MESSAGE_SEND_SUCCESS,
+  MESSAGE_SEND_FAULURE,
+  MESSAGE_REJECT,
+  MESSAGE_REJECT_SUCCESS,
+  MESSAGE_REJECT_FAILURE
 } from './Types';
 import axios from 'axios';
 import { storageGet } from './helper/localStorage';
@@ -563,7 +569,7 @@ export function messageRequest(id){
 
   return (dispatch) => {
     dispatch(message())
-    return axios.get(`/api/message/${id}`, config)
+    return axios.get(`/api/message/receive/${id}`, config)
     .then((response) => {
       dispatch(messageSuccess(response.data.result))
     }).catch((error) => {
@@ -588,6 +594,43 @@ export function messageSuccess(result){
 export function messageFailure(){
   return {
     type: MESSAGE_FAILURE
+  }
+}
+
+
+export function messageSendRequest(id){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+
+  return (dispatch) => {
+    dispatch(messageSend())
+    return axios.get(`/api/message/send/${id}`, config)
+    .then((response) => {
+      dispatch(messageSendSuccess(response.data.result))
+    }).catch((error) => {
+      dispatch(messageSendFailure())
+    })
+  }
+}
+
+export function messageSend(){
+  return {
+    type: MESSAGE_SEND
+  }
+}
+
+export function messageSendSuccess(result){
+  return {
+    type: MESSAGE_SEND_SUCCESS,
+    result
+  }
+}
+
+export function messageSendFailure(){
+  return {
+    type: MESSAGE_SEND_FAULURE
   }
 }
 
@@ -659,5 +702,41 @@ export function rejectSuccess(index){
 export function rejectFailure(){
   return {
     type: REJECT_FAILURE
+  }
+}
+
+
+export function messageRejectRequest(what, from , index, messageid){
+  let token = storageGet();
+  let config = {
+    headers: { 'x-access-token' : token }
+  };
+
+  return (dispatch) => {
+    dispatch(messageReject())
+    return axios.get(`/api/reject/${what}/${from}/${messageid}`, config)
+    .then((response) => {
+      dispatch(messageRejectSuccess(index))
+    }).catch((error) => {
+      dispatch(messageRejectFailure())
+    })
+  }
+}
+export function messageReject(){
+  return {
+    type: MESSAGE_REJECT
+  }
+}
+
+export function messageRejectSuccess(index){
+  return {
+    type: MESSAGE_REJECT_SUCCESS,
+    index
+  }
+}
+
+export function messageRejectFailure(){
+  return {
+    type: MESSAGE_REJECT_FAILURE
   }
 }

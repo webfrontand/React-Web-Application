@@ -49,7 +49,13 @@ import {
   PERMISSION_SUCCESS,
   REJECT,
   REJECT_SUCCESS,
-  REJECT_FAILURE
+  REJECT_FAILURE,
+  MESSAGE_SEND,
+  MESSAGE_SEND_SUCCESS,
+  MESSAGE_SEND_FAULURE,
+  MESSAGE_REJECT,
+  MESSAGE_REJECT_SUCCESS,
+  MESSAGE_REJECT_FAILURE
 } from '../actions/Types';
 import update from 'react-addons-update';
 
@@ -114,6 +120,11 @@ const initialState = {
     error: -1,
     list: []
   },
+  send: {
+    status: 'INIT',
+    error: -1,
+    list: []
+  },
   permission: {
     status: 'INIT',
     error: -1
@@ -124,6 +135,10 @@ const initialState = {
   },
   admin: {
     lists: [],
+    status: 'INIT',
+    error: -1
+  },
+  messagereject: {
     status: 'INIT',
     error: -1
   }
@@ -496,6 +511,46 @@ export default function post(state = initialState, action){
       return update(state, {
         admin: {
           status: { $set: 'FAILURE' }
+        }
+      });
+    case MESSAGE_SEND:
+      return update(state, {
+        send: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case MESSAGE_SEND_SUCCESS:
+      return update(state, {
+        send: {
+          status: { $set: 'SUCCESS' },
+          list: { $set: action.result }
+        }
+      });
+    case MESSAGE_SEND_FAULURE:
+      return update(state, {
+        send: {
+          status: { $set: 'FAILURE' }
+        }
+      });
+    case MESSAGE_REJECT:
+      return update(state, {
+        messagereject: {
+          status: { $set: 'WAIT' }
+        }
+      });
+    case MESSAGE_REJECT_SUCCESS:
+      return update(state, {
+        messagereject: {
+          status: { $set: 'SUCCESS' }
+        }
+      });
+    case MESSAGE_REJECT_FAILURE:
+      return update(state, {
+        messagereject: {
+          status: { $set: 'FAILURE' }
+        },
+        send: {
+          list: { $splice: [[action.index, 1]]}
         }
       })
     default:

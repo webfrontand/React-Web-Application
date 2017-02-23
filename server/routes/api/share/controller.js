@@ -51,6 +51,12 @@ exports.permission = (req, res) => {
           post.shareUser.push(person);
         }
 
+        var message = new Message();
+        message.from = "system"; // 누구로부터
+        message.to = person; // 누구에게
+        message.alert = "게시글 공유 허락"
+        message.save();
+
         post.save((err, result) => {
           return res.json({
             result
